@@ -1,9 +1,9 @@
-// O'yin ma'lumotlari
+
 let score = 0;
 let attempts = 3;
-let isGuessed = false; // Флаг, отслеживающий, угадал ли игрок правильный цвет
+let isGuessed = false;
 
-// Rang generatsiya qilish funktsiyasi
+
 function generateRandomColor() {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
@@ -11,56 +11,56 @@ function generateRandomColor() {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-// O'yinni boshlash funktsiyasi
+
 function startGame() {
     const buttons = document.querySelectorAll('.color-btn');
     const rgbCodeDisplay = document.getElementById('rgbCode');
-    const header = document.querySelector('header'); // Headerni tanlab olish
+    const header = document.querySelector('header'); 
     const correctColor = generateRandomColor();
-    isGuessed = false; // Сбрасываем флаг на начало нового раунда
+    isGuessed = false; 
     let selectedColor = false;
 
-    // Random 4 ta rang tanlash
+   
     const colors = [];
     for (let i = 0; i < 4; i++) {
         colors.push(generateRandomColor());
     }
 
-    // To'g'ri rangni random joyga qo'yish
+    
     const correctIndex = Math.floor(Math.random() * 4);
     colors[correctIndex] = correctColor;
 
-    // To'g'ri rang kodini ekranga chiqarish
+    
     rgbCodeDisplay.textContent = correctColor.toUpperCase();
 
-    // Buttonlarga ranglarni berish va event qo'shish
+    
     buttons.forEach((btn, index) => {
         btn.style.backgroundColor = colors[index];
         btn.onclick = function () {
             if (attempts > 0) {
                 if (colors[index] === correctColor && !isGuessed) {
-                    // Если правильный цвет угадан впервые
-                    score += 1; // Увеличиваем счет на 1
+                   
+                    score += 1; 
                     document.getElementById('score').textContent = `Score: ${score}`;
                     document.getElementById('status').textContent = 'Correct!';
                     selectedColor = true;
-                    isGuessed = true; // Устанавливаем флаг, что угадано правильно
+                    isGuessed = true; 
                     
-                    // To'g'ri rang topilganda header rangini o'zgartirish
+                    
                     header.style.backgroundColor = correctColor;
 
-                    // To'g'ri rang topilganda barcha tugmalarni to'g'ri rangga o'zgartirish
+                    
                     buttons.forEach((btn) => {
                         btn.style.backgroundColor = correctColor;
                     });
                 } else if (!isGuessed) {
-                    // Если неправильный цвет и еще не угадано
+                    
                     attempts -= 1;
                     document.getElementById('attempts').textContent = `Attempt: ${attempts}`;
                     document.getElementById('status').textContent = 'Try Again!';
                     
                     if (attempts === 0) {
-                        endGame(buttons); // Agar urinishlar tugasa, tugmalarni o'chirish
+                        endGame(buttons); 
                     }
                 }
             }
@@ -68,24 +68,24 @@ function startGame() {
     });
 }
 
-// O'yinni yakunlash funktsiyasi
+
 function endGame(buttons) {
     buttons.forEach((btn) => {
-        btn.style.backgroundColor = 'white'; // Tugmalarni oq rangga o'zgartirish
-        btn.disabled = true; // Tugmalarni bloklash
+        btn.style.backgroundColor = 'white'; 
+        btn.disabled = true; 
     });
     document.getElementById('status').textContent = 'Game Over! Press Refresh to try again.';
 }
 
-// Refresh tugmasi event
+
 document.getElementById('refresh').addEventListener('click', function () {
     document.getElementById('status').textContent = 'Your status:';
     const header = document.querySelector('header');
-    header.style.backgroundColor = '#87ceeb'; // Headerni asl rangiga qaytarish
+    header.style.backgroundColor = '#87ceeb';
 
     const buttons = document.querySelectorAll('.color-btn');
     buttons.forEach((btn) => {
-        btn.disabled = false; // Tugmalarni yana faol qilish
+        btn.disabled = false; 
     });
 
     attempts = 3;
@@ -93,5 +93,5 @@ document.getElementById('refresh').addEventListener('click', function () {
     startGame();
 });
 
-// O'yinni yuklaganda boshlash
+
 startGame();
